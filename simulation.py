@@ -2,17 +2,6 @@ import numpy as np
 import time
 import progressbar
 
-# Total number of agents is 90
-NUM_AGENTS_SOCIAL_QUICK = 10
-NUM_AGENTS_SOCIAL_AVERAGE = 10
-NUM_AGENTS_SOCIAL_LATE = 10
-NUM_AGENTS_AVERAGE_QUICK = 10
-NUM_AGENTS_AVERAGE_AVERAGE = 10
-NUM_AGENTS_AVERAGE_LATE = 10
-NUM_AGENTS_STRICT_QUICK = 10
-NUM_AGENTS_STRICT_AVERAGE = 10
-NUM_AGENTS_STRICT_LATE = 10
-
 NUM_OPTIONS = 10
 
 THRESHOLD_SOCIAL = 25
@@ -30,7 +19,7 @@ def partition(n, d, depth=0):
 
 n = 9
 d = 9
-Agents_lst = [[n-sum(p)] + p for p in partition(n, d-1)]
+AGENTS_LIST = [[n-sum(p)] + p for p in partition(n, d-1)]
 
 class Agent:
     def __init__(self, strategy, speed, num_options):
@@ -55,32 +44,32 @@ def option_utility_agents(agents, num_options):
     return option_util
 
 
-def generate_agents(num_options):
+def generate_agents(num_options, trial, agents_list):
     agents = []
-    for i in range(0, NUM_AGENTS_SOCIAL_QUICK):
+    for i in range(0, agents_list[trial][0] * 10):
         agents.append(Agent("social", "quick", num_options))
-    for i in range(0, NUM_AGENTS_SOCIAL_AVERAGE):
+    for i in range(0, agents_list[trial][1] * 10):
         agents.append(Agent("social", "average", num_options))
-    for i in range(0, NUM_AGENTS_SOCIAL_LATE):
+    for i in range(0, agents_list[trial][2] * 10):
         agents.append(Agent("social", "late", num_options))
-    for i in range(0, NUM_AGENTS_AVERAGE_QUICK):
+    for i in range(0, agents_list[trial][3] * 10):
         agents.append(Agent("average", "quick", num_options))
-    for i in range(0, NUM_AGENTS_AVERAGE_AVERAGE):
+    for i in range(0, agents_list[trial][4] * 10):
         agents.append(Agent("average", "average", num_options))
-    for i in range(0, NUM_AGENTS_AVERAGE_LATE):
+    for i in range(0, agents_list[trial][5] * 10):
         agents.append(Agent("average", "late", num_options))
-    for i in range(0, NUM_AGENTS_STRICT_QUICK):
+    for i in range(0, agents_list[trial][6] * 10):
         agents.append(Agent("strict", "quick", num_options))
-    for i in range(0, NUM_AGENTS_STRICT_AVERAGE):
+    for i in range(0, agents_list[trial][7] * 10):
         agents.append(Agent("strict", "average", num_options))
-    for i in range(0, NUM_AGENTS_STRICT_LATE):
+    for i in range(0, agents_list[trial][8] * 10):
         agents.append(Agent("strict", "late", num_options))
     return agents
 
 
-def run_test():
-	agents = generate_agents(NUM_OPTIONS)
-	votes = [0]*NUM_OPTIONS
+def run_test(num_options, trial, agents_list):
+	agents = generate_agents(num_options, trial, agents_list)
+	votes = [0]*num_options
 	for agent in [a for a in agents if a.speed == "quick"]:
 		for choice in agent.accepts_options():
 			votes[choice]+=1
@@ -94,18 +83,9 @@ def run_test():
 		# print("Selected option is: " + str(votes.index(max(votes))))
 
 if __name__ == "__main__":
-	print(Agents_lst[0][0])
-	bar = progressbar.ProgressBar(max_value=len(Agents_lst)*100)
-	for i in range(0, len(Agents_lst)):	
-		NUM_AGENTS_SOCIAL_QUICK = Agents_lst[i][0] * 10
-		NUM_AGENTS_SOCIAL_AVERAGE = Agents_lst[i][1] * 10
-		NUM_AGENTS_SOCIAL_LATE = Agents_lst[i][2] * 10
-		NUM_AGENTS_AVERAGE_QUICK = Agents_lst[i][3] * 10
-		NUM_AGENTS_AVERAGE_AVERAGE = Agents_lst[i][4] * 10
-		NUM_AGENTS_AVERAGE_LATE = Agents_lst[i][5] * 10
-		NUM_AGENTS_STRICT_QUICK = Agents_lst[i][6] * 10
-		NUM_AGENTS_STRICT_AVERAGE = Agents_lst[i][7] * 10
-		NUM_AGENTS_STRICT_LATE = Agents_lst[i][8] * 10
+	print(AGENTS_LIST[0][0])
+	bar = progressbar.ProgressBar(max_value=len(AGENTS_LIST)*100)
+	for i in range(0, len(AGENTS_LIST)):
 		for j in range(0, 100):
-			run_test()
+			run_test(NUM_OPTIONS, i, AGENTS_LIST)
 		bar.update(i)
