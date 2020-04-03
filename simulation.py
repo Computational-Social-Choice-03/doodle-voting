@@ -1,5 +1,6 @@
 import numpy as np
 import progressbar
+import random
 
 NUM_OPTIONS = 12
 
@@ -80,7 +81,10 @@ def run_test(num_options, num_agents):
 			votes[choice] += 1
 		agents_voted += 1
 	print(votes)
-	winning_option = votes.index(max(votes))
+	if LEXI:
+		winning_option = votes.index(max(votes))
+	else:
+		winning_option = random.choice([i for i in votes if i == max(votes)])
 	total_utilities = option_utility_agents(agents, num_options)
 	print("Selected option is: " + str(winning_option))
 	print("Votes for selected option is: " + str(votes[winning_option]))
