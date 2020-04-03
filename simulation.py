@@ -83,7 +83,8 @@ def run_test(num_options, num_agents):
 	winning_option = votes.index(max(votes))
 	total_utilities = option_utility_agents(agents, num_options)
 	print("Selected option is: " + str(winning_option))
-	print("Missed total utility: " + str(max(total_utilities) - total_utilities[winning_option]))
+	print("Votes for selected option is: " + str(votes[winning_option]))
+	print("Total utility missed: " + str(max(total_utilities) - total_utilities[winning_option]))
 	print("Missed utility per agent: " + str(utility_loss_per_agent(agents, winning_option)))
 
 
