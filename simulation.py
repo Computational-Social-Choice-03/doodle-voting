@@ -4,8 +4,8 @@ import random
 import csv
 
 # Amount of runs in total, look at for loops in main to get number
-bar = progressbar.ProgressBar(max_value=14560000)
-progress = 0
+# bar = progressbar.ProgressBar(max_value=8190001)
+# progress = 0
 
 
 class Agent:
@@ -108,9 +108,9 @@ def run_tests(num_options, threshold_disapprove, threshold_approve, social_bonus
     util_total = []
     util_agent = []
     for i in range(0, trials):
-        global progress
-        progress += 1
-        bar.update(progress)
+        # global progress
+        # progress += 1
+        # bar.update(progress)
         result = run_test(num_options, threshold_disapprove,
                           threshold_approve, social_bonus_cap, num_agents, lexi)
         votes.append(result['votes'])
@@ -137,9 +137,9 @@ if __name__ == "__main__":
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
-        for num_options in range(5, 25, 5):
-            for threshold_disapprove in range(20, 40, 10):
-                for threshold_approve in range(60, 80, 10):
+        for num_options in range(5, 30, 5):
+            for threshold_disapprove in range(20, 50, 10):
+                for threshold_approve in range(60, 90, 10):
                     for social_bonus_cap in range(0, num_options - 2):
                         for num_agents in range(3, 10):
                             for lexi in [True, False]:
