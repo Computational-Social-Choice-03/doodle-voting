@@ -3,6 +3,10 @@ import progressbar
 import random
 import csv
 
+# Amount of runs in total, look at for loops in main to get number
+bar = progressbar.ProgressBar(max_value=14560000)
+progress = 0
+
 
 class Agent:
     def __init__(self, num_options):
@@ -86,17 +90,6 @@ def run_test(num_options, threshold_disapprove, threshold_approve, social_bonus_
             votes) if vote_count == max(votes)])
         # winning_option = random.choice([i for i in votes if i == max(votes)])
     total_utilities = option_utility_agents(agents, num_options)
-    # print(total_utilities)
-    # print("Votes for selected option is: " + str(votes[winning_option]))
-    # print("Utility acquired: " + str(total_utilities[winning_option]/max(total_utilities)))
-    # print("Utility acquired per agent: " + str(utility_loss_per_agent(agents, winning_option)))
-    # print(len(total_utilities))
-    print(winning_option)
-    print(votes)
-    print('votes: ', votes[winning_option])
-    # print('util_total: ',
-    #       total_utilities[winning_option] / max(total_utilities))
-    # print('util_agent: ', utility_loss_per_agent(agents, winning_option))
     return {'votes': votes[winning_option], 'util_total': total_utilities[winning_option] / max(total_utilities), 'util_agent': utility_loss_per_agent(agents, winning_option)}
 
 
@@ -114,16 +107,26 @@ def run_tests(num_options, threshold_disapprove, threshold_approve, social_bonus
     votes = []
     util_total = []
     util_agent = []
-    bar = progressbar.ProgressBar(max_value=trials)
     for i in range(0, trials):
+        global progress
+        progress += 1
+        bar.update(progress)
         result = run_test(num_options, threshold_disapprove,
                           threshold_approve, social_bonus_cap, num_agents, lexi)
         votes.append(result['votes'])
         util_total.append(result['util_total'])
         util_agent.append(result['util_agent'])
-        bar.update(i)
     avg_util_agent = avg_util_agents(util_agent)
-    return {'num_options': num_options, 'threshold_disapprove': threshold_disapprove, 'threshold_approve': threshold_approve, 'social_bonus_cap': social_bonus_cap, 'num_agents': num_agents, 'votes': np.mean(votes), 'util_total': np.mean(util_total), 'util_agent': avg_util_agent}
+    return {
+		'num_options': num_options, 
+		'threshold_disapprove': threshold_disapprove, 
+		'threshold_approve': threshold_approve, 
+		'social_bonus_cap': social_bonus_cap, 
+		'num_agents': num_agents, 
+		'votes': np.mean(votes), 
+		'util_total': np.mean(util_total), 
+		'util_agent': avg_util_agent
+		}
 
 
 if __name__ == "__main__":
@@ -133,9 +136,10 @@ if __name__ == "__main__":
                       'social_bonus_cap', 'num_agents', 'votes', 'util_total', 'util_agent']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
-        for num_options in range(5, 30, 5):
-            for threshold_disapprove in range(10, 40, 5):
-                for threshold_approve in range(60, 90, 5):
+
+        for num_options in range(5, 25, 5):
+            for threshold_disapprove in range(20, 40, 10):
+                for threshold_approve in range(60, 80, 10):
                     for social_bonus_cap in range(0, num_options - 2):
                         for num_agents in range(3, 10):
                             for lexi in [True, False]:
