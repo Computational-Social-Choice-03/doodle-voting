@@ -32,9 +32,13 @@ agents_3_utils_1$x <- 1
 agents_3_utils_2$x <- 2
 agents_3_utils_3$x <- 3
 
-all_agents_3_utils <- rbind(agents_3_utils_1, agents_3_utils_2, agents_3_utils_3)
+agents_3_all_utils <- rbind(agents_3_utils_1, agents_3_utils_2, agents_3_utils_3)
 
-ggplot(all_agents_3_utils, aes(x = x, y = y, colour = row, linetype = "dashed"))
+ggplot(data=agents_3_all_utils, aes(x=x, y=y, group=row)) +
+  geom_line()+
+  geom_point()
+
+
 
 agents_4$util_agent <- str_remove(agents_4$util_agent, "\\[")
 agents_4$util_agent <- str_remove(agents_4$util_agent, "\\]")
