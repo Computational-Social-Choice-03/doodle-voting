@@ -22,9 +22,9 @@ agents_3$util_agent <- str_remove(agents_3$util_agent, "\\[")
 agents_3$util_agent <- str_remove(agents_3$util_agent, "\\]")
 agents_3$util_agent_splitted <- strsplit(agents_3$util_agent, ",")
 agents_3_utils <- data.frame(matrix(unlist(agents_3$util_agent_splitted), nrow=length(agents_3$util_agent_splitted), byrow=T))
-agents_3_utils_1 <- data.frame(y=agents_3_utils$X1)
-agents_3_utils_2 <- data.frame(y=agents_3_utils$X2)
-agents_3_utils_3 <- data.frame(y=agents_3_utils$X3)
+agents_3_utils_1 <- data.frame(y=as.numeric(paste(agents_3_utils$X1)))
+agents_3_utils_2 <- data.frame(y=as.numeric(paste(agents_3_utils$X2)))
+agents_3_utils_3 <- data.frame(y=as.numeric(paste(agents_3_utils$X3)))
 agents_3_utils_1$row <- seq.int(nrow(agents_3_utils_1))
 agents_3_utils_2$row <- seq.int(nrow(agents_3_utils_2))
 agents_3_utils_3$row <- seq.int(nrow(agents_3_utils_3))
@@ -34,10 +34,19 @@ agents_3_utils_3$x <- 3
 
 agents_3_all_utils <- rbind(agents_3_utils_1, agents_3_utils_2, agents_3_utils_3)
 
-ggplot(data=agents_3_all_utils, aes(x=x, y=y, group=row)) +
-  geom_line()+
-  geom_point()
+agents_3_utils_1_avg <- colMeans(agents_3_utils_1)
+agents_3_utils_2_avg <- colMeans(agents_3_utils_2)
+agents_3_utils_3_avg <- colMeans(agents_3_utils_3)
 
+agents_3_all_utils_avg <- data.frame(rbind(agents_3_utils_1_avg, agents_3_utils_2_avg, agents_3_utils_3_avg))
+
+
+ggplot(data=agents_3_all_utils, aes(x=x, y=y, group=row, scale_size(guide = "none"))) +
+  geom_line(linetype="solid", color="black", alpha=0.1) +
+  xlim(1, 3) +
+  ylim(0.5, 0.9) + labs(x = "position in the game", y="utily") +
+  geom_line(data=agents_3_all_utils_avg,aes(x=x,y=y),color="red",size=2,alpha=0.7) + 
+  theme(legend.position="right")
 
 
 agents_4$util_agent <- str_remove(agents_4$util_agent, "\\[")
