@@ -137,11 +137,11 @@ if __name__ == "__main__":
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
-        for num_options in range(25, 30, 5):
+        for num_options in range(5, 30, 5):
             for threshold_disapprove in range(20, 50, 10):
                 for threshold_approve in range(60, 90, 10):
                     for social_bonus_cap in range(0, num_options - 2):
-                        for num_agents in range(3, 10):
+                        for num_agents in range(10, 17, 2):
                             for lexi in [True, False]:
                                 # print(run_tests(num_options, threshold_disapprove, threshold_approve, social_bonus_cap, num_agents, trials, lexi))
                                 writer.writerow(run_tests(
