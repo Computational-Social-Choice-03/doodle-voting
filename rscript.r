@@ -5,6 +5,7 @@ current_path <- getActiveDocumentContext()$path
 setwd(dirname(current_path))
 library("data.table")
 library("bit64")
+library(dplyr)
 library("ggplot2")
 library(Rmisc)
 
@@ -31,6 +32,18 @@ agents_3_utils_3$row <- seq.int(nrow(agents_3_utils_3))
 agents_3_utils_1$x <- 1
 agents_3_utils_2$x <- 2
 agents_3_utils_3$x <- 3
+
+agents_3_thresholdA_60 <- agents_3[agents_3[,grep(60,threshold_approve)],]
+agents_3_thresholdA_60_D20 <- agents_3_thresholdA_60[agents_3_thresholdA_60[,grep(20,threshold_disapprove)],]
+
+
+agents_3_thresholdA_70 <- agents_3[agents_3[,grep(70,threshold_approve)],]
+agents_3_thresholdA_80 <- agents_3[agents_3[,grep(80,threshold_approve)],]
+
+agents_3_thresholdD_20 <- agents_3[agents_3[,grep(20,threshold_disapprove)],]
+agents_3_thresholdD_30 <- agents_3[agents_3[,grep(30,threshold_disapprove)],]
+agents_3_thresholdD_40 <- agents_3[agents_3[,grep(40,threshold_disapprove)],]
+
 
 agents_3_all_utils <- rbind(agents_3_utils_1, agents_3_utils_2, agents_3_utils_3)
 
